@@ -12,9 +12,9 @@
 ### Basic concepts of Functional Programming
 
     [lang=bash]
-    git clone https://github.com/theimowski/fsharp-workshops-basics.git
+    git clone https://github.com/manuxx/fsharp-workshops-basics.git
 
-or download ZIP from [here](https://github.com/theimowski/fsharp-workshops-basics/archive/master.zip), then in **Command Prompt**:
+or download ZIP from [here](https://github.com/manuxx/fsharp-workshops-basics/archive/master.zip), then in **Command Prompt**:
 
     [lang=bash]
     cd fsharp-workshops-basics
@@ -437,10 +437,10 @@ type Size =
 
 #### Discriminated Unions - Complex cases *)
 type Shape =
-    | Square of edge : float
+    | Square of float
     // `*` in type declarations stands for tuples
-    | Rectangle of width : float * height : float
-    | Circle of radius : float
+    | Rectangle of float * float
+    | Circle of float
 
 type Result =
     | Success                // no string needed for success state
@@ -495,10 +495,8 @@ type Symbol = Int
 #### Pattern matching expression *)
 let formatOptionalValue optionalValue =
     match optionalValue with
-    | Some value ->
-        "Value: " + value
-    | None ->
-        "No value at all!"
+    | Some value -> "Value: " + value
+    | None -> "No value at all!"
 
 let formattedValues =
     [Some "nice string"; None]
@@ -739,6 +737,21 @@ let optionalInts = formatOptionalInts "" [Some 28; Some 0; None]
 
 ---
 
+#### Pattern match guards (`when` keyword) *)
+let isEvenNumber optNumber =
+    match optNumber with
+    | Some n when n % 2 = 0 -> true
+    | _ -> false
+
+let onlyEvenNumbers =
+    [Some 2; Some 3; Some 4; Some 5; None]
+    |> List.filter isEvenNumber
+(** #### Value of ``onlyEvenNumbers`` *)
+(*** include-value: ``onlyEvenNumbers`` ***)
+(**
+
+---
+
 ### Example 4.1
 #### Recursive call with "accumulators" *)
 let rec partitionEvenOdd even odd numbers =
@@ -747,7 +760,8 @@ let rec partitionEvenOdd even odd numbers =
         (even, odd)
     | h :: tail when h % 2 = 0 ->
         partitionEvenOdd (h :: even) odd tail
-    | h :: tail -> // guard here would result in compiler complaining on incomplete pattern matching
+    | h :: tail -> // guard here would result in compiler complaining 
+                   // on incomplete pattern matching
         partitionEvenOdd even (h :: odd) tail
 
 let ``example 4.1`` = partitionEvenOdd [] [] [1..10]
@@ -769,7 +783,6 @@ let ``exercise 4.1`` : int option = None
 (** #### Value of ``exercise 4.1`` *)
 (*** include-value: ``exercise 4.1`` ***)
 (**
-
 
 ---
 
